@@ -31,10 +31,12 @@ public class UserLimit {
     @Column(name = "daily_usage")
     private BigDecimal dailyUsage;
 
-    @UpdateTimestamp
+    @CreationTimestamp
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    @CreationTimestamp
+    @UpdateTimestamp
+    @Column(name = "modify_date")
     private LocalDateTime modifyDate;
 
     public UserLimit(Long userId, BigDecimal dailyLimit) {

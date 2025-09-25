@@ -4,6 +4,6 @@ create table if not exists users_limits
     user_id      bigint,
     daily_limit  decimal(20, 2),
     daily_usage  decimal(20, 2),
-    creationDate timestamp,
-    modifyDate   timestamp
+    creation_date timestamp,
+    modify_date   timestamp
 );

@@ -9,6 +9,7 @@ import org.example.domain.exception.InsufficientLimitException;
 import org.example.repository.LimitRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -43,7 +44,7 @@ public class LimitService {
     public PaymentResponse processPayment(Long userId, BigDecimal amount) {
         UserLimit userLimit = getOrCreateUserLimit(userId);
         BigDecimal availableLimit = userLimit.getDailyLimit().subtract(amount);
-        if (availableLimit.compareTo(amount) >= 0) {
+        if (availableLimit.compareTo(amount) < 0) {
             throw new InsufficientLimitException(userLimit.getDailyLimit(), availableLimit, amount);
         }
 
@@ -55,7 +56,7 @@ public class LimitService {
                 userId, amount, availableLimit);
 
 
-        return new PaymentResponse(savedLimit.getUserId(),availableLimit);
+        return new PaymentResponse(savedLimit.getUserId(), userLimit.getDailyLimit().subtract(userLimit.getDailyUsage()));
 
     }
 
@@ -89,6 +90,7 @@ public class LimitService {
         );
     }
 
+    @Transactional
     public void resetAllDailyLimits() {
         int updatedCount = limitRepository.resetLimitsForNewDay();
 
