@@ -1,0 +1,26 @@
+server:
+  servlet:
+    context-path: "/limit_service"
+  port: 8080
+
+spring:
+  application:
+    name: limit_service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    password: "postgres"
+    username: "postgres"
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.PostgreSQLDialect"
+        ddl-auto: "none"
+    open-in-view: false
+
+scheduler:
+  cron: "0 0 0 * * ?"
+
+limit:
+  default: "10000.00"
